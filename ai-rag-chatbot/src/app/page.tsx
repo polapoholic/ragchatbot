@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react'
 
+
+
 type Citation = {
     id: string
     title: string
@@ -36,8 +38,8 @@ function Sources({ citations }: { citations?: Citation[] }) {
     if (!citations || citations.length === 0) return null
 
     return (
-        <details className="mt-2 rounded-xl border bg-white p-3">
-            <summary className="cursor-pointer text-xs text-gray-600">
+        <details className="mt-2 rounded-xl border border-zinc-200 bg-white/80 p-3">
+            <summary className="cursor-pointer text-xs text-zinc-600">
                 Sources ({citations.length})
             </summary>
 
@@ -65,21 +67,22 @@ function MessageBubble({ message }: { message: Message }) {
     return (
         <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
             <div className="max-w-[80%]">
-                <div className={`mb-1 text-[11px] font-semibold ${isUser ? 'text-gray-500 text-right' : 'text-gray-500'}`}>
-                    {isUser ? 'You' : 'Assistant'}
+                <div className={`mb-1 text-[11px] font-semibold ${isUser ? 'text-zinc-500 text-right' : 'text-zinc-500'}`}>
+                {isUser ? 'You' : 'Assistant'}
                 </div>
 
                 <div
                     className={[
                         'rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm whitespace-pre-wrap',
                         isUser
-                            ? 'bg-gray-900 text-white'
+                            ? 'bg-zinc-800 text-zinc-50'
                             : message.error
-                                ? 'bg-white border border-red-200 text-red-700'
-                                : 'bg-gray-50 border text-gray-900'
+                                ? 'bg-rose-50 border border-rose-200 text-rose-800'
+                                : 'bg-zinc-50 border border-zinc-200 text-zinc-900'
                     ].join(' ')}
                 >
-                    {message.content}
+
+                {message.content}
                 </div>
 
                 {!isUser ? <Sources citations={message.citations} /> : null}
@@ -95,6 +98,7 @@ function MessageBubble({ message }: { message: Message }) {
 }
 
 export default function Home() {
+    const inputRef = useRef<HTMLTextAreaElement | null>(null)
     const [input, setInput] = useState('')
     const [loading, setLoading] = useState(false)
     const [messages, setMessages] = useState<Message[]>([])
@@ -163,6 +167,7 @@ export default function Home() {
             setMessages((m) => [...m, assistantError])
         } finally {
             setLoading(false)
+            inputRef.current?.focus()
         }
     }
 
@@ -183,9 +188,9 @@ export default function Home() {
             <div className="flex h-[calc(100vh-220px)] flex-col gap-3">
                 <div
                     ref={listRef}
-                    className="flex-1 overflow-y-auto rounded-2xl border bg-white p-4"
+                    className="flex-1 overflow-y-auto rounded-2xl border border-zinc-200 bg-white/70 p-4"
                 >
-                    {messages.length === 0 ? (
+                {messages.length === 0 ? (
                         <div className="text-sm text-gray-500">
                             예: “환불은 어떻게 해요?” / “운영시간 알려줘”
                         </div>
@@ -204,11 +209,12 @@ export default function Home() {
                 >
                     <div className="flex items-end gap-2">
             <textarea
+                ref={inputRef}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="질문을 입력하세요…"
-                className="min-h-[44px] max-h-40 w-full resize-none rounded-xl border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-200"
-                disabled={loading}
+                className="min-h-[44px] max-h-40 flex-1 resize-none rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 focus:ring-2 focus:ring-zinc-200"
+                disabled={false}
                 onKeyDown={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
                         e.preventDefault()
@@ -219,9 +225,9 @@ export default function Home() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="h-[44px] rounded-xl bg-gray-900 px-4 text-sm font-medium text-white disabled:opacity-60"
+                            className="h-[44px] shrink-0 whitespace-nowrap rounded-xl bg-zinc-800 px-4 text-sm font-medium text-white hover:bg-zinc-700 disabled:opacity-60"
                         >
-                            {loading ? '전송중' : '전송'}
+                        {loading ? '전송중' : '전송'}
                         </button>
                     </div>
 

@@ -24,14 +24,13 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en">
-        <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 text-gray-900`}
-        >
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-zinc-50 text-zinc-900`}>
+
         <div className="min-h-screen flex flex-col">
 
             {/* Header */}
-            <header className="bg-white border-b px-6 py-4 flex items-center justify-between">
-                <h1 className="text-lg font-semibold tracking-tight">
+            <header className="sticky top-0 z-10 border-b border-zinc-200 bg-white/80 backdrop-blur px-6 py-4 flex items-center justify-between">
+            <h1 className="text-lg font-semibold tracking-tight">
                     RAG Chatbot
                 </h1>
                 <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
