@@ -164,7 +164,27 @@ function MessageBubble({
     return (
         <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
             <div className="max-w-[80%]">
-                ...
+                <div
+                    className={`mb-1 text-[11px] font-semibold ${
+                        isUser ? 'text-zinc-500 text-right' : 'text-zinc-500'
+                    }`}
+                >
+                    {isUser ? 'You' : 'Assistant'}
+                </div>
+
+                <div
+                    className={[
+                        'rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm whitespace-pre-wrap break-words',
+                        isUser
+                            ? 'bg-zinc-800 text-zinc-50'
+                            : message.error
+                                ? 'bg-rose-50 border border-rose-200 text-rose-800'
+                                : 'bg-zinc-50 border border-zinc-200 text-zinc-900'
+                    ].join(' ')}
+                >
+                    {message.content || '(빈 응답)'}
+                </div>
+
                 {!isUser ? <Sources citations={message.citations} /> : null}
 
                 {showSuggestions ? (
@@ -180,6 +200,7 @@ function MessageBubble({
         </div>
     )
 }
+
 
 
 function Sidebar({
