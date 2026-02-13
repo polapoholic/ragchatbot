@@ -43,10 +43,20 @@ export async function POST(req: Request) {
     const latencyMs = Date.now() - t0
 
     if (!top || top.score <= 0) {
+        const suggestions = FAQ.slice(0, 6).map((f) => ({
+            id: f.id,
+            title: f.title,
+            tags: f.tags ?? []
+        }))
+
         return NextResponse.json({
             answer: '관련 문서를 찾지 못했습니다.',
             citations: [],
-            meta: { model: 'local-search', latencyMs }
+            meta: { model: 'local-search', latencyMs },
+            hints: {
+                categories: ['계정', '결제', '배송', '고객센터', '오류'],
+                suggestions
+            }
         })
     }
 
